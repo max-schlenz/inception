@@ -1,0 +1,7 @@
+FROM		alpine:3.16.4
+
+RUN			apk update && \
+			apk upgrade && \
+			apk add nginx
+# CMD			["tail", "-f", "/dev/null"]
+CMD			["nginx", "-c", "/etc/nginx/conf.d/nginx.conf", "-g", "daemon off;"]

@@ -8,3 +8,5 @@ RUN			apk update && \
 			apk add nginx zsh
 
 RUN			chsh -s /bin/zsh
+
+

@@ -1,11 +1,14 @@
 FROM		alpine:3.16.4
-ENTRYPOINT	["/bin/sh"]
+# ENTRYPOINT	["/bin/sh"]
 
-EXPOSE		80 433
 
 RUN			apk update && \
 			apk upgrade && \
-			apk add nginx
+			apk add bash nginx
 
+EXPOSE		80
+EXPOSE		443
+# CMD			["/bin/bash"]
 
-# CMD			["nginx", "-g", "daemon off;"]
+# CMD			["tail", "-f", "/dev/null"]
+CMD			["nginx", "-g", "daemon off;"]

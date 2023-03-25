@@ -1,7 +1,18 @@
 version: "3.9"
 
+networks:
+  net:
+
+# volumes:
+#   wordpess:
+#     name: wordpress
+#     driver_opts:
+#         device: ~/wp
+
 services:
   nginx:
+    depends_on:
+      - php-fpm
     container_name: nginx
     restart: unless-stopped
     build: 
@@ -11,8 +22,25 @@ services:
       - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
       - ~/inception/srcs/requirements/nginx/conf/conf.d:/etc/nginx/conf.d
       - ~/inception/srcs/requirements/nginx/public:/var/www/public
+      # - ~/inception/srcs/.www:/var/www/html
+      - ./fastcgi_params:/etc/nginx/conf.d/fastcgi_params
     ports:
       - "443:443"
+
+  php-fpm:
+    image: php:7.4-fpm-alpine
+    volumes:
+      - ./php.ini:/usr/local/etc/php/php.ini
+  # mariadb:
+  #   container_name: mariadb
+  #   restart: unless-stopped
+  #   build: 
+  #     context: ./requirements/mariadb
+  #     dockerfile: Dockerfile.mariadb 
+  #   volumes:
+  #     - ~/inception/srcs/requirements/mariadb/conf:/etc/mysql
+  #   ports:
+  #     - "3306:3306"
 
   # wordpress:
   #     image: wordpress

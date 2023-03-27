@@ -1,0 +1,224 @@
+[
+    {
+        "Id": "95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119",
+        "Created": "2023-03-27T14:53:08.402521331Z",
+        "Path": "php-fpm7",
+        "Args": [
+            "-F"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 471024,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2023-03-27T14:53:09.014419137Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:e9c082b9172a371f7eee3259d97f10a31cfefe88c9fce1186a48310ab78f8e6e",
+        "ResolvConfPath": "/var/lib/docker/containers/95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119/hostname",
+        "HostsPath": "/var/lib/docker/containers/95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119/hosts",
+        "LogPath": "/var/lib/docker/containers/95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119/95ac83eb938d09d9dc3f51fe84fb5ffb17695a50cfedcb7e875a4957bdfb4119-json.log",
+        "Name": "/wp_php-fpm",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/max/inception/srcs/requirements/nginx/public:/var/www/public:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "srcs_net",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/e2a6609a514db6cbd187cdd55619800e93d1a18ec960b523cba2bb6786729645-init/diff:/var/lib/docker/overlay2/p3e7dkg864od5quq4jgr2pbsc/diff:/var/lib/docker/overlay2/gq87x7tqglhont8e4mgl76jnt/diff:/var/lib/docker/overlay2/a8x2ghkq54azkis017zpx8sl4/diff:/var/lib/docker/overlay2/202d357008c720df7beb9c2a1394520211d29c196a95e1e4bbd75211ec2245a5/diff",
+                "MergedDir": "/var/lib/docker/overlay2/e2a6609a514db6cbd187cdd55619800e93d1a18ec960b523cba2bb6786729645/merged",
+                "UpperDir": "/var/lib/docker/overlay2/e2a6609a514db6cbd187cdd55619800e93d1a18ec960b523cba2bb6786729645/diff",
+                "WorkDir": "/var/lib/docker/overlay2/e2a6609a514db6cbd187cdd55619800e93d1a18ec960b523cba2bb6786729645/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/max/inception/srcs/requirements/nginx/public",
+                "Destination": "/var/www/public",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "95ac83eb938d",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "php-fpm7",
+                "-F"
+            ],
+            "Image": "srcs-wp_php-fpm",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "4bf6d3c3709d28b51f59253a6e03c3f6df8eb00b6d1b44f14ed98ba9fcc3c4f9",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:e9c082b9172a371f7eee3259d97f10a31cfefe88c9fce1186a48310ab78f8e6e",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "srcs",
+                "com.docker.compose.project.config_files": "/home/max/inception/srcs/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/max/inception/srcs",
+                "com.docker.compose.replace": "bb3ccce952b9885e4f68abdc0777eb95ec62c01b64dfbd7e072a3102ac147e79",
+                "com.docker.compose.service": "wp_php-fpm",
+                "com.docker.compose.version": "2.17.0"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "6576313d4586fc04b61b32335cf57fb8599da4274a8d49b3b84dd47a13dedab4",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {},
+            "SandboxKey": "/var/run/docker/netns/6576313d4586",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "srcs_net": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "wp_php-fpm",
+                        "wp_php-fpm",
+                        "95ac83eb938d"
+                    ],
+                    "NetworkID": "e41da1f4e665b451322cf15a23aab759186056940a93468c4e3feb6ccf4fed92",
+                    "EndpointID": "84f4d29904dc48818db8e47197c8b8d6e5f86bcd6e1372c7012f318b6bbb875a",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:12:00:02",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]

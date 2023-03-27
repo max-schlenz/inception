@@ -8,11 +8,14 @@ networks:
 #     name: wordpress
 #     driver_opts:
 #         device: ~/wp
+# volumes:
+#   - /data/mysql:/var/lib/mysql
 
 services:
   nginx:
     depends_on:
-      - php-fpm
+      # - wordpress
+      - wp_php-fpm
     container_name: nginx
     restart: unless-stopped
     build: 
@@ -20,17 +23,54 @@ services:
       dockerfile: Dockerfile.nginx 
     volumes:
       - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
-      - ~/inception/srcs/requirements/nginx/conf/conf.d:/etc/nginx/conf.d
+      - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/nginx.conf
       - ~/inception/srcs/requirements/nginx/public:/var/www/public
       # - ~/inception/srcs/.www:/var/www/html
       - ./fastcgi_params:/etc/nginx/conf.d/fastcgi_params
+    networks:
+      - net
     ports:
       - "443:443"
 
-  php-fpm:
-    image: php:7.4-fpm-alpine
+  wp_php-fpm:
+    # image: php:7.4-fpm-alpine
+    container_name: wp_php-fpm
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile.wordpress 
     volumes:
-      - ./php.ini:/usr/local/etc/php/php.ini
+      - ~/inception/srcs/requirements/nginx/public:/var/www/public
+    networks:
+      - net
+  # wordpress:
+  #   image: wordpress:php7.3-fpm-alpine
+  #   volumes:
+  #     - /data/html:/var/www/html
+  #   depends_on:
+  #     - mysql
+  #   environment:
+  #     WORDPRESS_DB_HOST: mysql
+  #     MYSQL_ROOT_PASSWORD: mysql_root_pass
+  #     WORDPRESS_DB_NAME: db_name
+  #     WORDPRESS_DB_USER: user_name
+  #     WORDPRESS_DB_PASSWORD: user_pass
+  #     WORDPRESS_TABLE_PREFIX: wp_
+  #   links:
+  #     - mysql
+  #   restart: always
+
+  # mysql:
+  #   image: mariadb
+  #   volumes:
+  #     - /data/mysql:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: mysql_root_pass
+  #     MYSQL_DATABASE: db_name
+  #     MYSQL_USER: user_name
+  #     MYSQL_PASSWORD: user_pass
+  #   restart: unless-stopped
+  
+  
   # mariadb:
   #   container_name: mariadb
   #   restart: unless-stopped

@@ -24,7 +24,7 @@ services:
     volumes:
       - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
       - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/nginx.conf
-      - ~/inception/srcs/requirements/nginx/public:/var/www/public
+      # - ~/inception/srcs/requirements/nginx/public:/var/www/public
       # - ~/inception/srcs/.www:/var/www/html
       - ./fastcgi_params:/etc/nginx/conf.d/fastcgi_params
     networks:
@@ -39,7 +39,8 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress 
     volumes:
-      - ~/inception/srcs/requirements/nginx/public:/var/www/public
+      # - ~/inception/srcs/requirements/nginx/public:/var/www/public
+      - ~/inception/srcs/requirements/wordpress/wordpress/wp-config.php:/var/www/html/wp-config.php
       - ~/inception/srcs/requirements/wordpress/php-fpm.d/:/etc/php7/php-fpm.d/
     networks:
       - net

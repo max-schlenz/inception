@@ -40,6 +40,7 @@ services:
       dockerfile: Dockerfile.wordpress 
     volumes:
       - ~/inception/srcs/requirements/nginx/public:/var/www/public
+      - ~/inception/srcs/requirements/wordpress/php-fpm.d/:/etc/php7/php-fpm.d/
     networks:
       - net
   # wordpress:

@@ -15,6 +15,7 @@ RUN			mv /wordpress/* /var/www/html/
 
 RUN			adduser -D -g '' -G www-data www-data
 
+
 # RUN			chown -R nginx:nginx /var/www/html && \
 # 			chmod -R 755 /var/www/html && \
 # 			chmod -R 777 /var/www/html/wp-content/uploads

@@ -6,12 +6,13 @@ RUN			echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposito
 
 RUN			apk update && \
 			apk upgrade && \
-			apk add zsh nano curl wget php7 php7-fpm php7-mysqli php7-dom php7-xml php7-xmlwriter php7-curl php7-tokenizer php7-simplexml mysql-client
+			apk add zsh nano curl wget php7 php7-fpm php7-mysqli php7-dom php7-xml php7-xmlwriter php7-curl php7-json php7-tokenizer php7-simplexml mysql-client
 
 RUN			wget https://wordpress.org/latest.tar.gz
 RUN			tar -xzf latest.tar.gz
 RUN			mkdir -p /var/www/html
 RUN			mv /wordpress/* /var/www/html/
+RUN			chmod -R 777 /var/www/html/
 
 RUN			adduser -D -g '' -G www-data www-data
 

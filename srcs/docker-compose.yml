@@ -32,15 +32,18 @@ services:
       dockerfile: Dockerfile.nginx 
     volumes:
       - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
-      - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/nginx.conf
+      - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/http.d/my.conf
+      - ~/ng.conf:/etc/nginx/nginx.conf
+      # - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/conf.d/default.conf
       # - ~/inception/srcs/requirements/nginx/public:/var/www/public
       # - ~/inception/srcs/.www:/var/www/html
       - wordpress_vol:/var/www/html
-      - ./fastcgi_params:/etc/nginx/conf.d/fastcgi_params
+      # - ./fastcgi_params:/etc/nginx/conf.d/fastcgi_params
     networks:
       - net
     ports:
       - "443:443"
+      - "80:80"
 
   wp_php-fpm:
     # image: php:7.4-fpm-alpine
@@ -59,12 +62,12 @@ services:
     networks:
       - net
     environment:
-    #   WORDPRESS_DB_HOST: wp
-    #   WORDPRESS_DB_NAME: db_name
-    #   WORDPRESS_DB_USER: user_name
-    #   WORDPRESS_DB_PASSWORD: user_pass
-    #   WORDPRESS_TABLE_PREFIX: wp_
-      MYSQL_ROOT_PASSWORD: my-secret-password
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: wp_db
+      DB_USER: dbuser
+      DB_PASSWORD: dbpw
+      MYSQL_ROOT_PASSWORD: rootpw
 
   # mysql:
   #   build: 
@@ -83,20 +86,21 @@ services:
   #     - net
 
   mysql:
-    image: alpine:latest
-    command: sh -c "apk add --no-cache mariadb mariadb-client && mkdir /var/run/mysqld && chown mysql:mysql /var/run/mysqld && chmod 755 /var/run/mysqld && \
-             mysql_install_db --user=mysql && \
-             chown -R mysql:mysql /var/lib/mysql && \
-             /usr/bin/mysqld --user=mysql --skip-networking=0 --bind-address=0.0.0.0"
+    build: 
+      context: ./requirements/mariadb2
+      dockerfile: Dockerfile.mariadb 
     ports:
       - "3306:3306"
     volumes:
       - sql_vol:/var/lib/mysql
       - ~/inception/srcs/requirements/mariadb2/config/mysqld.cnf:/etc/mysql/mariadb.conf.d/mysqld.cnf
-    environment:
-      MYSQL_ROOT_PASSWORD: my-secret-password
     networks:
       - net
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpw
 
     
   # mariadb:

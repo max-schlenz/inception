@@ -9,6 +9,4 @@ RUN			adduser -D -g '' -G www-data www-data
 RUN			mkdir -p /var/www/html
 RUN			chown -R www-data:www-data /var/www/html/
 
-# CMD			["tail", "-f", "/dev/null"]
-# CMD			["/bin/bash"]
 CMD			["nginx", "-g", "daemon off;"]

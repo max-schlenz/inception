@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache zsh openrc mariadb mariadb-client
+RUN apk add --no-cache mariadb mariadb-client
 
 RUN	mysql_install_db --user=mysql --ldata=/var/lib/mysql/
 
@@ -10,15 +10,13 @@ RUN	mkdir /var/run/mysqld && \
 	mysql_install_db --user=mysql && \
 	chown -R mysql:mysql /var/lib/mysql
 
-
 # COPY init.sql /docker-entrypoint-initdb.d/
 
 # RUN mysql < /docker-entrypoint-initdb.d/init.sql
 
 # COPY my.cnf /etc/mysql/my.cnf
+
 EXPOSE 3306
-COPY test.sh /entrypoint.sh
 
 # CMD ["/bin/sh"]
 # CMD ["mysqld", "--user=mysql", "--skip-networking=0", "--bind-address=0.0.0.0"]
-ENTRYPOINT ["/entrypoint.sh"]

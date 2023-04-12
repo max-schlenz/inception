@@ -2,26 +2,24 @@ version: "3.9"
 
 networks:
   net:
+    driver: bridge
 
 volumes:
   sql_vol:
-    name: sql_vol
-    driver: local
     driver_opts:
-      device: ~/inception/srcs/volumes/mysql
+      device: /home/max/inception/srcs/volumes/mysql
       o: bind
       type: none
 
   wordpress_vol:
-    name: wordpress_vol
-    driver: local
     driver_opts:
-      device: ~/inception/srcs/volumes/wordpress
+      device: /home/max/inception/srcs/volumes/wordpress
       o: bind
       type: none
   
 services:
   nginx:
+    container_name: nginx
     depends_on:
       - wp_php-fpm
     build: 
@@ -38,6 +36,7 @@ services:
     restart: unless-stopped
 
   wp_php-fpm:
+    container_name: wp_php
     depends_on:
       - mysql
     build: 
@@ -46,6 +45,7 @@ services:
     volumes:
       - ~/inception/srcs/requirements/wordpress/php-fpm.d/:/etc/php7/php-fpm.d/
       - ~/inception/srcs/requirements/wordpress/wordpress/wp-config.php:/var/www/html/wp-config.php
+      - ~/inception/srcs/requirements/wordpress/redis/redis.conf:/etc/redis.conf
       - wordpress_vol:/var/www/html
     env_file: .env
     networks:
@@ -53,10 +53,10 @@ services:
     restart: unless-stopped
 
   mysql:
+    container_name: mysql
     build: 
       context: ./requirements/mariadb
       dockerfile: Dockerfile.mariadb 
-    container_name: mysql
     volumes:
       - sql_vol:/var/lib/mysql
       - ~/inception/srcs/requirements/mariadb/users.sql:/docker-entrypoint-initdb.d/users.sql
@@ -66,4 +66,23 @@ services:
       - net
     ports:
       - "3306:3306"
+    restart: unless-stopped
+
+  ftp:
+    container_name: ftp
+    depends_on: 
+      - wp_php-fpm
+    build:
+      context: ./requirements/ftp
+      dockerfile: Dockerfile.ftp
+      args:
+        FTP_USR: ${FTP_USR}
+        FTP_PWD: ${FTP_PWD}
+    volumes:
+      - wordpress_vol:/var/ftp:ro
+      # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
+      - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+    env_file: .env
+    networks:
+      - net
     restart: unless-stopped

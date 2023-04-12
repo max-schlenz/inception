@@ -1,45 +1,98 @@
+
 FROM alpine:3.16
 
-ARG FTP_USR \
-    FTP_PWD
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends vsftpd \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache vsftpd
+RUN apk upgrade && apk add vsftpd
 
-RUN adduser -h /var/www -s /bin/false -D ftproot && \
-    echo "ftproot:ftproot" | /usr/sbin/chpasswd && \
-    adduser ftproot root
 
-RUN sed -i "s|#chroot_local_user=YES|chroot_local_user=YES|g"  /etc/vsftpd/vsftpd.conf && \
-    sed -i "s|#local_enable=YES|local_enable=YES|g"  /etc/vsftpd/vsftpd.conf && \
-    sed -i "s|#write_enable=YES|write_enable=YES|g"  /etc/vsftpd/vsftpd.conf && \
-    sed -i "s|#local_umask=022|local_umask=007|g"  /etc/vsftpd/vsftpd.conf
+RUN mkdir -p /var/run/vsftpd/empty \
+ && mkdir -p /etc/vsftpd \
+ && mkdir -p /var/ftp \
+ && mv /etc/vsftpd.conf /etc/vsftpd.orig; exit 0
 
-RUN echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
-    echo 'seccomp_sandbox=NO' >> /etc/vsftpd/vsftpd.conf && \
-    echo 'pasv_enable=YES' >> /etc/vsftpd/vsftpd.conf
+# VOLUME ["/var/ftp"]
+RUN adduser -D -g '' -G www-data www-data
+RUN chown www-data:www-data /var/ftp
+RUN chmod 777 /var/ftp
 
-WORKDIR /var/www
+EXPOSE 20-21
+EXPOSE 65500-65515
 
-EXPOSE 21
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
+# ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/usr/sbin/vsftpd"]
+# FROM alpine:3.16
 
-CMD [ "/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf" ]
+# # ARG FTP_USR \
+# #     FTP_PWD
 
-# FROM alpine:latest
+# # RUN apk update && apk upgrade && \
+# #     apk add --no-cache vsftpd
 
-# # RUN apt-get update && apt-get install vsftpd -y
-# RUN apk add vsftpd
+# # RUN adduser -h /var/www -s /bin/false -D ftproot && \
+# #     echo "ftproot:ftproot" | /usr/sbin/chpasswd && \
+# #     adduser ftproot root
 
-# # RUN adduser -D ftpuser && \
-# #     echo "ftpuser:password" | chpasswd
-# # ENTRYPOINT ["/bin/sh"]
+# # RUN rm -rf /etc/vsftpd/vsftpd.conf
 
-# RUN mkdir -p /var/log/vsftpd && touch /var/log/vsftpd/vsftpd.log
-# RUN mkdir -p /home/ftp/upload
-# RUN chmod 777 /home/ftp/upload 
-# RUN mkdir -p /var/run/vsftpd/empty
-# RUN chmod 555 /var/run/vsftpd/empty
+# # RUN sed -i "s|#chroot_local_user=YES|chroot_local_user=YES|g"  /etc/vsftpd/vsftpd.conf && \
+# #     sed -i "s|#local_enable=YES|local_enable=YES|g"  /etc/vsftpd/vsftpd.conf && \
+# #     sed -i "s|#write_enable=YES|write_enable=YES|g"  /etc/vsftpd/vsftpd.conf && \
+# #     sed -i "s|#local_umask=022|local_umask=007|g"  /etc/vsftpd/vsftpd.conf
 
-# EXPOSE 20 21 990
+# # RUN echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
+# #     echo 'seccomp_sandbox=NO' >> /etc/vsftpd/vsftpd.conf && \
+# #     echo 'pasv_enable=YES' >> /etc/vsftpd/vsftpd.conf
+# RUN apk add --no-cache proftpd openssl
 
-# CMD ["vsftpd"]
+# # RUN			adduser -D -g '' -G www-data www-data
+# # RUN mkdir -p /var/www/html && chown /www-data:www-data /var/www/html
+
+# # RUN adduser -D -h /var/www/html -s /sbin/nologin www-data
+# # RUN	echo "www-data:ftppw" | chpasswd \
+# #     && chown www-data:www-data /var/www/html \
+# #     && openssl passwd -1 -salt $(openssl rand -hex 8) ftppw | tee -a /etc/proftpd/ftpd.passwd > /dev/null \
+# #     && echo "DefaultRoot /var/www/html" >> /etc/proftpd/proftpd.conf \
+# #     && echo "RequireValidShell off" >> /etc/proftpd/proftpd.conf
+
+# RUN adduser -D -h /var/www/html -s /sbin/nologin www-data; exit 0;
+# RUN echo "www-data:ftppw" | chpasswd
+# RUN addgroup www-data www-data
+# RUN chown www-data:www-data /var/www/html 
+# RUN openssl passwd -1 -salt $(openssl rand -hex 8) ftppw | tee -a /etc/proftpd/ftpd.passwd > /dev/null 
+# RUN echo "DefaultRoot /var/www/html" >> /etc/proftpd/proftpd.conf 
+# RUN echo "RequireValidShell off" >> /etc/proftpd/proftpd.conf
+
+# RUN mkdir -p /var/run/proftpd
+# RUN chown -R ftp:ftp /var/run/proftpd
+# RUN chmod 755 /var/run/proftpd
+# WORKDIR /var/www
+
+# EXPOSE 21
+
+# CMD ["proftpd", "--nodaemon"]
+# # CMD [ "/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf" ]
+
+# # FROM alpine:latest
+
+# # # RUN apt-get update && apt-get install vsftpd -y
+# # RUN apk add vsftpd
+
+# # # RUN adduser -D ftpuser && \
+# # #     echo "ftpuser:password" | chpasswd
+# # # ENTRYPOINT ["/bin/sh"]
+
+# # RUN mkdir -p /var/log/vsftpd && touch /var/log/vsftpd/vsftpd.log
+# # RUN mkdir -p /home/ftp/upload
+# # RUN chmod 777 /home/ftp/upload 
+# # RUN mkdir -p /var/run/vsftpd/empty
+# # RUN chmod 555 /var/run/vsftpd/empty
+
+# # EXPOSE 20 21 990
+
+# # CMD ["vsftpd"]

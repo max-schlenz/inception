@@ -14,7 +14,4 @@ RUN			chmod 644 /var/www/html/wp-config.php; true
 
 WORKDIR		/var/www/html
 
-# COPY		entrypoint.sh /entrypoint.sh
-# RUN			chmod +x /entrypoint.sh
-# ENTRYPOINT	["/entrypoint.sh"]
 CMD			["php-fpm7", "-F"]

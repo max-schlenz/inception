@@ -21,7 +21,8 @@ services:
   nginx:
     container_name: nginx
     depends_on:
-      - wp_php-fpm
+      - wordpress_php
+      - gitea
     build: 
       context: ./requirements/nginx
       dockerfile: Dockerfile.nginx 
@@ -35,10 +36,11 @@ services:
       - "443:443"
     restart: unless-stopped
 
-  wp_php-fpm:
-    container_name: wp_php
+  wordpress_php:
+    container_name: wordpress_php
     depends_on:
       - mysql
+      - gitea
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress 
@@ -71,18 +73,53 @@ services:
   ftp:
     container_name: ftp
     depends_on: 
-      - wp_php-fpm
+      - wordpress_php
     build:
       context: ./requirements/ftp
       dockerfile: Dockerfile.ftp
-      args:
-        FTP_USR: ${FTP_USR}
-        FTP_PWD: ${FTP_PWD}
     volumes:
       - wordpress_vol:/var/ftp:ro
       # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
-      - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
     env_file: .env
     networks:
       - net
     restart: unless-stopped
+
+  gitea:
+    container_name: gitea
+    depends_on: 
+      - mysql
+    build:
+      context: ./requirements/gitea
+      dockerfile: Dockerfile.gitea
+    volumes:
+      - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
+      # - wordpress_vol:/var/ftp:ro
+      # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
+      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+    env_file: .env
+    networks:
+      - net
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  # redis:
+  #   container_name: redis
+  #   depends_on: 
+  #     - wordpress_php
+  #   build:
+  #     context: ./requirements/redis
+  #     dockerfile: Dockerfile.redis
+  #   # volumes:
+  #   #   - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
+  #     # - wordpress_vol:/var/ftp:ro
+  #     # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
+  #     # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+  #   env_file: .env
+  #   networks:
+  #     - net
+  #   # ports:
+  #   #   - 3000:3000
+  #   restart: unless-stopped

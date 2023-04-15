@@ -19,10 +19,9 @@ RUN adduser -D -g '' -G www-data www-data
 # RUN chown www-data:www-data /var/ftp
 # RUN chmod 777 /var/ftp
 
-EXPOSE 20-21
-EXPOSE 65500-65515
+# EXPOSE 20-21
+# EXPOSE 65500-65515
 # COPY	config/vsftpd.conf /etc/vsftpd.conf
-COPY config/vsftpd.conf /etc/vsftpd.conf
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

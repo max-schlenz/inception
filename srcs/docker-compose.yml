@@ -64,13 +64,11 @@ services:
       dockerfile: Dockerfile.mariadb 
     volumes:
       - sql_vol:/var/lib/mysql
-      - ~/inception/srcs/requirements/mariadb/users.sql:/docker-entrypoint-initdb.d/users.sql
-      - ~/inception/srcs/requirements/mariadb/config/mysqld.cnf:/etc/mysql/mariadb.conf.d/mysqld.cnf
     env_file: .env
     networks:
       - net
     ports:
-      - "3306:3306"
+      - 3306:3306
     restart: unless-stopped
 
   ftp:
@@ -82,11 +80,13 @@ services:
       dockerfile: Dockerfile.ftp
     volumes:
       - wordpress_vol:/var/ftp:ro
-      # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
-      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+      - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
     env_file: .env
     networks:
       - net
+    ports:
+      - 20:20
+      - 21:21
     restart: unless-stopped
 
   gitea:

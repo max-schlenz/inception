@@ -22,7 +22,7 @@ services:
     container_name: nginx
     depends_on:
       - wordpress_php
-      - gitea
+      # - gitea
     build: 
       context: ./requirements/nginx
       dockerfile: Dockerfile.nginx 
@@ -40,18 +40,21 @@ services:
     container_name: wordpress_php
     depends_on:
       - mysql
-      - gitea
+      # - gitea
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress 
     volumes:
       - ~/inception/srcs/requirements/wordpress/php-fpm.d/:/etc/php7/php-fpm.d/
+      - ~/inception/srcs/requirements/wordpress/php-fpm.conf:/etc/php7/php-fpm.conf
       - ~/inception/srcs/requirements/wordpress/wordpress/wp-config.php:/var/www/html/wp-config.php
-      - ~/inception/srcs/requirements/wordpress/redis/redis.conf:/etc/redis.conf
+      # - ~/inception/srcs/requirements/wordpress/redis/redis.conf:/etc/redis.conf
       - wordpress_vol:/var/www/html
     env_file: .env
     networks:
       - net
+    ports:
+      - 9000:9000
     restart: unless-stopped
 
   mysql:
@@ -86,24 +89,24 @@ services:
       - net
     restart: unless-stopped
 
-  gitea:
-    container_name: gitea
-    depends_on: 
-      - mysql
-    build:
-      context: ./requirements/gitea
-      dockerfile: Dockerfile.gitea
-    volumes:
-      - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
-      # - wordpress_vol:/var/ftp:ro
-      # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
-      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
-    env_file: .env
-    networks:
-      - net
-    ports:
-      - 3000:3000
-    restart: unless-stopped
+  # gitea:
+  #   container_name: gitea
+  #   depends_on: 
+  #     - mysql
+  #   build:
+  #     context: ./requirements/gitea
+  #     dockerfile: Dockerfile.gitea
+  #   volumes:
+  #     - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
+  #     # - wordpress_vol:/var/ftp:ro
+  #     # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
+  #     # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+  #   env_file: .env
+  #   networks:
+  #     - net
+  #   ports:
+  #     - 3000:3000
+  #   restart: unless-stopped
 
   # redis:
   #   container_name: redis
@@ -112,14 +115,12 @@ services:
   #   build:
   #     context: ./requirements/redis
   #     dockerfile: Dockerfile.redis
-  #   # volumes:
-  #   #   - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
-  #     # - wordpress_vol:/var/ftp:ro
-  #     # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
-  #     # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+  #   volumes:
+  #     - wordpress_vol:/var/www/html
+  #     - ~/inception/srcs/requirements/redis/config/redis.conf:/etc/redis.conf
   #   env_file: .env
   #   networks:
   #     - net
-  #   # ports:
-  #   #   - 3000:3000
+  #   ports:
+  #     - 6379:6379
   #   restart: unless-stopped

@@ -12,12 +12,9 @@ RUN			mv /wordpress/* /var/www/html/
 RUN			chown -R www-data:www-data /var/www/html/
 RUN			chmod 644 /var/www/html/wp-config.php; true
 
-RUN			wget https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1-en.php -O /var/www/html/adminer.php
-
 WORKDIR		/var/www/html
 
-EXPOSE		6379
-
-COPY		entrypoint.sh /entrypoint.sh
-RUN			chmod +x /entrypoint.sh
-ENTRYPOINT	["/entrypoint.sh"]
+# COPY		entrypoint.sh /entrypoint.sh
+# RUN			chmod +x /entrypoint.sh
+# ENTRYPOINT	["/entrypoint.sh"]
+CMD			["php-fpm7", "-F"]

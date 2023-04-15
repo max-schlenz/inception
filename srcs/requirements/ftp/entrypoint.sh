@@ -33,4 +33,4 @@
 # ftpd_banner=${FTPD_BANNER}
 # EOF
 
-/usr/sbin/vsftpd "$@" 2>/ftp.log
+/usr/sbin/vsftpd "/etc/vsftpd.conf" 2>/ftp.log

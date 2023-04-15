@@ -80,7 +80,7 @@ services:
       dockerfile: Dockerfile.ftp
     volumes:
       - wordpress_vol:/var/ftp:ro
-      - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
+      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
     env_file: .env
     networks:
       - net

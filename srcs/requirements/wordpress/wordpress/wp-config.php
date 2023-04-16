@@ -133,6 +133,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once ABSPATH . 'wp-settings.php';
 
 define('WP_CACHE_KEY_SALT', 'mschlenz_inception');
-define('WP_CACHE', true);
+// define('WP_CACHE', true);
 define('WP_REDIS_HOST', 'redis');
 define('WP_REDIS_PORT', '6379');

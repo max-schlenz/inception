@@ -1,12 +1,9 @@
-FROM		alpine:3.16.4
+FROM		alpine:3.16
 
-RUN			apk update && \
-			apk upgrade && \
-			apk add nginx
+RUN			apk add nginx
 
-RUN			adduser -D -g '' -G www-data www-data
-
-RUN			mkdir -p /var/www/html
-RUN			chown -R www-data:www-data /var/www/html/
+RUN			adduser -D -g '' -G www-data www-data \
+			&& mkdir -p /var/www/html \
+			&& chown -R www-data:www-data /var/www/html/ 
 
 CMD			["nginx", "-g", "daemon off;"]

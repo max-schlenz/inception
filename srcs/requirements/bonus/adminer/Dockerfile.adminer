@@ -1,6 +1,6 @@
-FROM		alpine:3.15
+FROM		alpine:3.16
 
-RUN			apk add zsh nano curl wget php7 php7-fpm php7-mysqli php7-dom php7-xml php7-xmlwriter php7-curl php7-json php7-tokenizer php7-simplexml php7-redis redis mysql-client php7 php7-fpm php7-mysqli php7-session php7-json php7-mbstring php7-gd
+RUN			apk add wget php8 php8-fpm php8-mysqli php8-dom php8-xml php8-xmlwriter php8-curl php8-json php8-tokenizer php8-simplexml mysql-client php8 php8-fpm php8-mysqli php8-session php8-json php8-mbstring php8-gd
 
 RUN			adduser -D -g '' -G www-data www-data
 
@@ -10,4 +10,4 @@ RUN			chown -R www-data:www-data /var/www/html/
 RUN			wget https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1-en.php -O /var/www/html/adminer.php
 RUN			chmod 644 /var/www/html/adminer.php; true
 
-CMD			["php-fpm7", "-F"]
+CMD			["php-fpm8", "-F"]

@@ -27,7 +27,7 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile.nginx 
     volumes:
-      - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
+      - ~/inception/srcs/requirements/nginx/certs:/etc/nginx/ssl
       - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/http.d/my.conf
       - wordpress_vol:/var/www/html
     networks:
@@ -45,8 +45,8 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress 
     volumes:
-      - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.d/:/etc/php7/php-fpm.d/
-      - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.conf:/etc/php7/php-fpm.conf
+      - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.d/:/etc/php8/php-fpm.d/
+      - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.conf:/etc/php8/php-fpm.conf
       - ~/inception/srcs/requirements/wordpress/wordpress/wp-config.php:/var/www/html/wp-config.php
       # - ~/inception/srcs/requirements/wordpress/redis/redis.conf:/etc/redis.conf
       - wordpress_vol:/var/www/html
@@ -76,7 +76,7 @@ services:
     depends_on: 
       - wordpress_php
     build:
-      context: ./requirements/ftp
+      context: ./requirements/bonus/ftp
       dockerfile: Dockerfile.ftp
     volumes:
       - wordpress_vol:/var/ftp:ro
@@ -94,10 +94,10 @@ services:
     depends_on: 
       - mysql
     build:
-      context: ./requirements/gitea
+      context: ./requirements/bonus/gitea
       dockerfile: Dockerfile.gitea
     volumes:
-      - ~/inception/srcs/requirements/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
+      - ~/inception/srcs/requirements/bonus/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
       # - wordpress_vol:/var/ftp:ro
       # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
       # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
@@ -113,11 +113,11 @@ services:
     depends_on: 
       - wordpress_php
     build:
-      context: ./requirements/redis
+      context: ./requirements/bonus/redis
       dockerfile: Dockerfile.redis
     volumes:
       - wordpress_vol:/var/www/html
-      - ~/inception/srcs/requirements/redis/config/redis.conf:/etc/redis.conf
+      - ~/inception/srcs/requirements/bonus/redis/config/redis.conf:/etc/redis.conf
     env_file: .env
     networks:
       - net
@@ -132,11 +132,11 @@ services:
       - mysql
       - gitea
     build:
-      context: ./requirements/adminer
+      context: ./requirements/bonus/adminer
       dockerfile: Dockerfile.adminer
     volumes:
-      - ~/inception/srcs/requirements/adminer/php-fpm/php-fpm.d/:/etc/php7/php-fpm.d/
-      - ~/inception/srcs/requirements/adminer/php-fpm/php-fpm.conf:/etc/php7/php-fpm.conf
+      - ~/inception/srcs/requirements/bonus/adminer/php-fpm/php-fpm.d/:/etc/php8/php-fpm.d/
+      - ~/inception/srcs/requirements/bonus/adminer/php-fpm/php-fpm.conf:/etc/php8/php-fpm.conf
     env_file: .env
     networks:
       - net
@@ -147,12 +147,12 @@ services:
   nginx_portfolio:
     container_name: nginx_portfolio
     build: 
-      context: ./requirements/nginx_portfolio
+      context: ./requirements/bonus/nginx_portfolio
       dockerfile: Dockerfile.nginx_portfolio
     volumes:
-      - ~/inception/srcs/requirements/certs:/etc/nginx/ssl
-      - ~/inception/srcs/requirements/nginx_portfolio/conf/conf.d/nginx.conf:/etc/nginx/http.d/my.conf
-      - ~/inception/srcs/requirements/nginx_portfolio/portfolio.html:/var/www/html/index.html
+      - ~/inception/srcs/requirements/nginx/certs:/etc/nginx/ssl
+      - ~/inception/srcs/requirements/bonus/nginx_portfolio/conf/conf.d/nginx.conf:/etc/nginx/http.d/my.conf
+      - ~/inception/srcs/requirements/bonus/nginx_portfolio/portfolio.html:/var/www/html/index.html
     networks:
       - net
     ports:

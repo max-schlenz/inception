@@ -1,0 +1,10 @@
+FROM		alpine:3.16
+
+RUN			apk add nginx
+
+RUN			adduser -D -g '' -G www-data www-data
+
+RUN			mkdir -p /var/www/html \
+			&& chown -R www-data:www-data /var/www/html/
+
+CMD			["nginx", "-g", "daemon off;"]

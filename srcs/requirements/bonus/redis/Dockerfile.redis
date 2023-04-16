@@ -1,0 +1,10 @@
+FROM		alpine:3.16
+
+# RUN			apk add php8 php8-fpm php8-mysqli php8-dom php8-xml php8-xmlwriter php8-curl php8-json php8-tokenizer php8-simplexml php8-redis redis mysql-client php8-session php8-mbstring php8-gd
+RUN			apk add --update --no-cache php8-fpm redis
+
+# RUN			mkdir -p /var/www/html
+
+ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
+
+# CMD			["redis-server", "/etc/redis.conf"]

@@ -44,7 +44,16 @@ services:
       # - gitea
     build: 
       context: ./requirements/wordpress
-      dockerfile: Dockerfile.wordpress 
+      dockerfile: Dockerfile.wordpress
+      args:
+        WP_URL: $WP_URL
+        WP_TITLE: $WP_TITLE
+        WP_ROOT_LOGIN: $WP_ROOT_LOGIN
+        WP_ROOT_PASS: $WP_ROOT_PASS
+        WP_ROOT_MAIL: $WP_ROOT_MAIL
+        WP_USER_LOGIN: $WP_USER_LOGIN
+        WP_USER_PASS: $WP_USER_PASS
+        WP_USER_MAIL: $WP_USER_MAIL
     volumes:
       - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.d/:/etc/php8/php-fpm.d/
       - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.conf:/etc/php8/php-fpm.conf

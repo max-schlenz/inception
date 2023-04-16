@@ -22,7 +22,7 @@ services:
     container_name: nginx
     depends_on:
       - wordpress_php
-      - adminer
+      # - adminer
     build: 
       context: ./requirements/nginx
       dockerfile: Dockerfile.nginx 
@@ -30,6 +30,7 @@ services:
       - ~/inception/srcs/requirements/nginx/certs:/etc/nginx/ssl
       - ~/inception/srcs/requirements/nginx/conf/conf.d/nginx.conf:/etc/nginx/http.d/my.conf
       - wordpress_vol:/var/www/html
+    env_file: .env
     networks:
       - net
     ports:
@@ -62,6 +63,13 @@ services:
     build: 
       context: ./requirements/mariadb
       dockerfile: Dockerfile.mariadb 
+      args:
+        MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+        MYSQL_ROOT_USER: $MYSQL_ROOT_USER
+        DB_NAME: $DB_NAME
+        GITEA_DB_NAME: $GITEA_DB_NAME
+        DB_USER: $DB_USER
+        DB_PASSWORD: $DB_PASSWORD
     volumes:
       - sql_vol:/var/lib/mysql
     env_file: .env
@@ -130,7 +138,7 @@ services:
     depends_on: 
       - wordpress_php
       - mysql
-      - gitea
+      # - gitea
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile.adminer

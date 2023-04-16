@@ -1,15 +1,7 @@
 FROM		debian:buster
 
-ARG 		MYSQL_ROOT_PASSWORD
-ARG 		MYSQL_ROOT_USER
-ARG 		DB_NAME
-ARG 		GITEA_DB_NAME
-ARG 		DB_USER
-ARG 		DB_PASSWORD
-
 RUN			apt-get update && apt-get install procps mariadb-server mariadb-client -y
-
-COPY		config/* /etc/mysql/mariadb.conf.d/
+# RUN			apk add mariadb mariadb-client
 
 RUN			mysql_install_db --user=mysql --ldata=/var/lib/mysql/ \
 			&& mkdir /var/run/mysqld \
@@ -18,9 +10,8 @@ RUN			mysql_install_db --user=mysql --ldata=/var/lib/mysql/ \
 			&& mysql_install_db --user=mysql \
 			&& chown -R mysql:mysql /var/lib/mysql
 
-COPY		setup.sh /setup.sh
+COPY		config/* /etc/mysql/mariadb.conf.d/
+COPY		entrypoint.sh /entrypoint.sh
 
-RUN			chmod +x /setup.sh \
-			&& ./setup.sh
-
-ENTRYPOINT	["mysqld"]
+# ENTRYPOINT	["/bin/sh"]
+ENTRYPOINT	["/entrypoint.sh"]

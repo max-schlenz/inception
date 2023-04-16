@@ -1,8 +1,16 @@
 FROM		alpine:3.16
 
-RUN			apk add git sqlite openssh-client ca-certificates
+RUN			apk add git libcap sqlite openssh-client ca-certificates
 
-RUN			wget https://dl.gitea.io/gitea/1.14.5/gitea-1.14.5-linux-amd64 -O /usr/local/bin/gitea \
+RUN			wget https://dl.gitea.com/gitea/1.19.1/gitea-1.19.1-linux-amd64 -O /usr/local/bin/gitea \
 			&& chmod +x /usr/local/bin/gitea
 
-ENTRYPOINT ["/usr/local/bin/gitea"]
+RUN			adduser -D -u 1000 git \
+			&& mkdir -p /usr/local/bin/data \
+    		&& chown -R git:git /usr/local/bin/data
+
+RUN			setcap 'cap_net_bind_service=+ep' /usr/local/bin/gitea
+
+USER		git
+
+ENTRYPOINT	["/usr/local/bin/gitea", "web", "-q"]

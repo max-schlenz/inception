@@ -1,12 +1,10 @@
 #!/bin/sh
 
-exec mysqld --user=mysql --skip-networking=0 --bind-address=0.0.0.0 &
+service mysql start
 
-while ! mysqladmin ping -h localhost --silent; do
-  sleep 1
-done
+sleep 1
 
-mariadb -u root -p$MYSQL_ROOT_PASSWORD << EOF
+mysql -u root -p$MYSQL_ROOT_PASSWORD << EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 CREATE DATABASE IF NOT EXISTS $GITEA_DB_NAME;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
@@ -19,10 +17,6 @@ GRANT ALL PRIVILEGES ON $GITEA_DB_NAME.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-mysqladmin shutdown
+sleep 1
 
-while mysqladmin ping -h localhost --silent; do
-  sleep 1
-done
-
-exec mysqld --user=mysql --skip-networking=0 --bind-address=0.0.0.0 
+service mysql stop

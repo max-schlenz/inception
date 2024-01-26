@@ -7,13 +7,13 @@ networks:
 volumes:
   sql_vol:
     driver_opts:
-      device: /home/max/inception/srcs/volumes/mysql
+      device: /home/mschlenz/data/mysql
       o: bind
       type: none
 
   wordpress_vol:
     driver_opts:
-      device: /home/max/inception/srcs/volumes/wordpress
+      device: /home/mschlenz/data/wordpress
       o: bind
       type: none
   
@@ -22,7 +22,6 @@ services:
     container_name: nginx
     depends_on:
       - wordpress_php
-      # - adminer
     build: 
       context: ./requirements/nginx
       dockerfile: Dockerfile.nginx 
@@ -41,7 +40,6 @@ services:
     container_name: wordpress_php
     depends_on:
       - mysql
-      # - gitea
     build: 
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress
@@ -58,13 +56,12 @@ services:
       - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.d/:/etc/php8/php-fpm.d/
       - ~/inception/srcs/requirements/wordpress/php-fpm/php-fpm.conf:/etc/php8/php-fpm.conf
       - ~/inception/srcs/requirements/wordpress/wordpress/wp-config.php:/var/www/html/wp-config.php
-      # - ~/inception/srcs/requirements/wordpress/redis/redis.conf:/etc/redis.conf
       - wordpress_vol:/var/www/html
     env_file: .env
     networks:
       - net
     ports:
-      - 9000:9000
+      - "9000:9000"
     restart: unless-stopped
 
   mysql:
@@ -85,7 +82,7 @@ services:
     networks:
       - net
     ports:
-      - 3306:3306
+      - "3306:3306"
     restart: unless-stopped
 
   ftp:
@@ -97,13 +94,12 @@ services:
       dockerfile: Dockerfile.ftp
     volumes:
       - wordpress_vol:/var/ftp:ro
-      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
     env_file: .env
     networks:
       - net
     ports:
-      - 20:20
-      - 21:21
+      - "20:20"
+      - "21:21"
     restart: unless-stopped
 
   gitea:
@@ -115,9 +111,6 @@ services:
       dockerfile: Dockerfile.gitea
     volumes:
       - ~/inception/srcs/requirements/bonus/gitea/config/app.ini:/usr/local/bin/custom/conf/app.ini
-      # - wordpress_vol:/var/ftp:ro
-      # - ~/inception/srcs/requirements/certs:/etc/ssl/private/
-      # - ~/inception/srcs/requirements/ftp/config/vsftpd.conf:/etc/vsftpd.conf
     env_file: .env
     networks:
       - net
@@ -133,13 +126,13 @@ services:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile.redis
     volumes:
-      - wordpress_vol:/var/www/html
       - ~/inception/srcs/requirements/bonus/redis/config/redis.conf:/etc/redis.conf
+      - wordpress_vol:/var/www/html
     env_file: .env
     networks:
       - net
     ports:
-      - 6379:6379
+      - "6379:6379"
     restart: unless-stopped
 
   adminer:
@@ -147,7 +140,6 @@ services:
     depends_on: 
       - wordpress_php
       - mysql
-      # - gitea
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile.adminer

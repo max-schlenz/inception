@@ -9,7 +9,7 @@ ARG			WP_USER_LOGIN
 ARG			WP_USER_PASS
 ARG			WP_USER_MAIL
 
-RUN			apk add wget php8 php8-fpm php8-mysqli php8-dom php8-xml php8-xmlwriter php8-curl php8-json php8-tokenizer php8-simplexml php8-redis mysql-client php8-session php8-mbstring php8-gd
+RUN			apk add wget php8-phar php8 php8-fpm php8-mysqli php8-dom php8-xml php8-xmlwriter php8-curl php8-json php8-tokenizer php8-simplexml php8-redis mysql-client php8-session php8-mbstring php8-gd
 
 RUN			wget https://wordpress.org/latest.tar.gz \
 			&& tar -xzf latest.tar.gz \
@@ -21,11 +21,9 @@ RUN			adduser -D -g '' -G www-data www-data \
 			&& chown -R www-data:www-data /var/www/html/ \
 			&& chmod 644 /var/www/html/wp-config.php; true
 
-# RUN			wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-# 			&& chmod +x wp-cli.phar \
-# 			&& ./wp-cli.phar core install --allow-root --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ROOT_LOGIN --admin_password=$WP_ROOT_PASS --admin_email=$WP_ROOT_MAIL \
-# 			&& ./wp-cli.phar user create --allow-root $WP_USER_LOGIN $WP_USER_MAIL --user_pass=$WP_USER_PASS
-
 WORKDIR		/var/www/html
 
-CMD			["php-fpm8", "-F"]
+COPY		entrypoint.sh /entrypoint.sh
+RUN			chmod +x /entrypoint.sh
+
+ENTRYPOINT	["/entrypoint.sh"]

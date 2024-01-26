@@ -122,6 +122,7 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
+define( 'WP_REDIS_SCHEME', 'unix' );
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
@@ -133,6 +134,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once ABSPATH . 'wp-settings.php';
 
 define('WP_CACHE_KEY_SALT', 'mschlenz_inception');
-// define('WP_CACHE', true);
+define('WP_CACHE', 'true');
 define('WP_REDIS_HOST', 'redis');
 define('WP_REDIS_PORT', '6379');
